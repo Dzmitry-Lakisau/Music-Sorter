@@ -16,6 +16,7 @@ namespace MusicSorter
     {
         public string source_path = null;
         string destination_path = "E:\\UNSORTED";
+        const string SOURCE_NAME = "SONY 32 GB";
         string[] folders = null;
         private Form1 _Form1;
         public Form2(Form1 f)
@@ -31,7 +32,7 @@ namespace MusicSorter
             {
                 try
                 {
-                    if (d.VolumeLabel.ToString() == "SONY 32 GB")
+                    if (d.VolumeLabel.ToString() == SOURCE_NAME)
                     {
                         source_path = d.Name.ToString();
                         break;
@@ -39,7 +40,7 @@ namespace MusicSorter
 
                 }
                 catch (IOException err) {
-                    MessageBox.Show("Флешка не найдена", "Ошибка");
+                    MessageBox.Show(SOURCE_NAME + " не найдена", "Ошибка");
                     Close();
                 }
             }
