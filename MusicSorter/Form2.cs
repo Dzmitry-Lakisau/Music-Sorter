@@ -30,24 +30,27 @@ namespace MusicSorter
 
             foreach (DriveInfo d in allDrives)
             {
-                try
-                {
+                try {
                     if (d.VolumeLabel.ToString() == SOURCE_NAME)
                     {
                         source_path = d.Name.ToString();
                         break;
                     }
-
                 }
-                catch (IOException err) {
-                    MessageBox.Show(SOURCE_NAME + " не найдена", "Ошибка");
-                    Close();
+                catch (IOException err)
+                {
+
                 }
             }
             if (source_path != null)
             {
                 label1.Text = source_path;
                 UpdateFolders(source_path, listBox1);
+            }
+            else
+            {
+                MessageBox.Show(SOURCE_NAME + " не найдена", "Ошибка");
+                Close();
             }
         }
 
@@ -80,7 +83,7 @@ namespace MusicSorter
                 {
                     Microsoft.VisualBasic.FileIO.FileSystem.DeleteFile(file, Microsoft.VisualBasic.FileIO.UIOption.OnlyErrorDialogs, Microsoft.VisualBasic.FileIO.RecycleOption.SendToRecycleBin);
                 }
-                Directory.Delete(source_path + s);
+                Directory.Delete(source_path + s, true);
             }
             UpdateFolders(destination_path, listBox2);
             UpdateFolders(source_path, listBox1);
@@ -102,7 +105,6 @@ namespace MusicSorter
                 string[] folders = Directory.GetDirectories(sourceFolder);
                 foreach (string folder in folders)
                 {
-                    //TODO файлы в дочерних папках не копируются
                     string name = Path.GetFileName(folder);
                     string dest = Path.Combine(destFolder, name);
                     CopyFolder(folder, dest);
@@ -193,25 +195,16 @@ namespace MusicSorter
 
         private string[] FilterFiles(string[] files)
         {
-            //TODO сделать за один проход
-            string[] sortedfiles = null;
-            int n = 0;
+
+            List<string> sortedfiles = new List<string>();
+           
             for (int i = 0; i < files.GetLength(0); i++)
                 if (files[i].EndsWith(".mp3") || files[i].EndsWith(".flac"))
                 {
-                    n++;
+                    sortedfiles.Add(files[i]);
                 }
 
-            sortedfiles = new string[n];
-
-            int j = 0;
-            for (int i = 0; i < files.GetLength(0); i++)
-                if (files[i].EndsWith(".mp3") || files[i].EndsWith(".flac"))
-                {
-                    sortedfiles[j] = files[i];
-                    j++;
-                }
-            return sortedfiles;
+            return sortedfiles.ToArray<string>();
         }
 
         private void button5_Click(object sender, EventArgs e)
