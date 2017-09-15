@@ -155,7 +155,6 @@ namespace MusicSorter
             catch (IOException err){ MessageBox.Show(err.ToString(), "Ошибка"); }
 
             UpdateFolders(root);
-
             int i = 0;
             foreach (var item in listBox1.Items)
             {
@@ -434,6 +433,7 @@ namespace MusicSorter
                 DeleteFile(file);
             }
             RefreshList();
+            button5.Enabled = true;
         }
 
         private void DeleteFile(string file)

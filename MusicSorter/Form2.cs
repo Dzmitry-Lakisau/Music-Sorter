@@ -65,10 +65,16 @@ namespace MusicSorter
             listbox.Sorted = true;
         }
 
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            ComboBox combobox = (ComboBox)sender;
+            UpdateFolders(combobox.GetItemText(combobox.SelectedItem), listBox1);
+        }
+
         private void button1_Click(object sender, EventArgs e)
         {
             string[] folders = GetSelectedFolders();
-           
+
             foreach (string s in folders)
             {
                 CopyFolder(source_path + s, destination_path + "\\" + s);
@@ -79,45 +85,8 @@ namespace MusicSorter
                 }
                 Directory.Delete(source_path + s, true);
             }
-
-            int m = listBox1.TopIndex;
-            int n = 0;
-            foreach (string s in folders)
-            {
-                for (int i = 0; i < listBox1.Items.Count; i++)
-                {
-                    if (listBox1.Items[i].ToString().Equals(s))
-                    {
-                        if (i < m)
-                        {
-                            n++;
-                        }
-                    }
-                }
-            }
-            UpdateFolders(source_path, listBox1);
-            listBox1.TopIndex = m - n;
-
-
-            m = listBox2.TopIndex;
-            n = 0;
-
             UpdateFolders(destination_path, listBox2);
-            foreach (string s in folders)
-            {
-                for (int i = 0; i < listBox2.Items.Count; i++)
-                {
-                    if (listBox2.Items[i].ToString().Equals(s))
-                    {
-                        if (i < m)
-                        {
-                            n++;
-                        }
-                    }
-                }
-            }
-            listBox2.TopIndex = m + n;
-
+            UpdateFolders(source_path, listBox1);
         }
 
         static public void CopyFolder(string sourceFolder, string destFolder)
@@ -154,12 +123,6 @@ namespace MusicSorter
                 folders[i] = temp[i].ToString();
             }
             return folders;
-        }
-
-        private void label1_Click(object sender, EventArgs e)
-        {
-            listBox1.Items.Clear();
-            UpdateFolders(destination_path, listBox1);
         }
 
         private void label2_Click(object sender, EventArgs e)
@@ -266,36 +229,5 @@ namespace MusicSorter
             _Form1.UpdateFolders(s);
             _Form1.listBox2.Items.Clear();
         }
-
-        private void getAvailableFreeSpaceOnUSB()
-        {
-            DriveInfo[] allDrives = DriveInfo.GetDrives();
-
-            foreach (DriveInfo d in allDrives)
-            {
-                try
-                {
-                    if (d.VolumeLabel.ToString() == SOURCE_NAME)
-                    {
-                        label3.Text = (d.AvailableFreeSpace / (1024 * 1024)).ToString() + " MB available";
-                        break;
-                    }
-                }
-                catch (IOException err)
-                {
-
-                }
-            }
-        }
-
-        private void listBox1_Layout(object sender, LayoutEventArgs e)
-        {
-            getAvailableFreeSpaceOnUSB();
-        }
-
-        private void listBox1_CursorChanged(object sender, EventArgs e)
-        {
-            getAvailableFreeSpaceOnUSB();
-        }
-    }
+}
 }
