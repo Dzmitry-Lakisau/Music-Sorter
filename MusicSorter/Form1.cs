@@ -251,6 +251,7 @@ namespace MusicSorter
                     else foldername = albums[0] + " (" + years[0] + ")";
             }
             foldername = foldername.Replace(" / ", ", ");
+            foldername = foldername.Replace(":", "");
             return foldername;
         }
 
